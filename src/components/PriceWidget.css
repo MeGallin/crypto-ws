@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(12, 12, 12, 1);
+  background-color: var(--color-background-primary);
   padding: 0.1rem;
 }
 
@@ -16,8 +16,8 @@
   border-radius: 0.75rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border: 1px solid #1f2937;
-  background-color: #111827;
+  border: 1px solid var(--color-widget-border);
+  background-color: var(--color-widget-background);
   padding: 1.25rem;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .loading-message {
-  color: #9ca3af;
+  color: var(--color-text-secondary);
   font-size: 1rem;
 }
 
@@ -141,7 +141,7 @@
 
 /* Title */
 .price-widget-title {
-  color: white;
+  color: var(--color-text-primary);
   font-size: 1.25rem;
   font-weight: 600;
 }
@@ -154,27 +154,27 @@
 }
 
 .price-widget-status.live {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #6ee7b7;
-  border: 1px solid rgba(16, 185, 129, 0.4);
+  background-color: var(--color-live-status-bg);
+  color: var(--color-live-status);
+  border: 1px solid var(--color-live-status-border);
 }
 
 .price-widget-status.reconnecting {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: #fcd34d;
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  background-color: var(--color-reconnecting-status-bg);
+  color: var(--color-reconnecting-status);
+  border: 1px solid var(--color-reconnecting-status-border);
 }
 
 .price-widget-status.offline {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  background-color: var(--color-offline-status-bg);
+  color: var(--color-offline-status);
+  border: 1px solid var(--color-offline-status-border);
 }
 
 .price-widget-status.connecting {
-  background-color: rgba(59, 130, 246, 0.15);
-  color: #93c5fd;
-  border: 1px solid rgba(59, 130, 246, 0.4);
+  background-color: var(--color-connecting-status-bg);
+  color: var(--color-connecting-status);
+  border: 1px solid var(--color-connecting-status-border);
 }
 
 /* Main content area */
@@ -187,14 +187,14 @@
 /* Price label */
 .price-widget-price-label {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
 }
 
 /* Price value */
 .price-widget-price-value {
   font-size: 2rem;
   font-weight: 700;
-  color: white;
+  color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
   display: flex; /* To align price and arrow */
   align-items: center;
@@ -204,11 +204,11 @@
 }
 
 .price-widget-price-value.price-up {
-  color: #10b981; /* Green for price increase */
+  color: var(--color-positive); /* Green for price increase */
 }
 
 .price-widget-price-value.price-down {
-  color: #ef4444; /* Red for price decrease */
+  color: var(--color-negative); /* Red for price decrease */
 }
 
 .price-arrow {
@@ -221,11 +221,11 @@
 }
 
 .price-arrow.up {
-  color: #10b981; /* Green for up arrow */
+  color: var(--color-positive); /* Green for up arrow */
 }
 
 .price-arrow.down {
-  color: #ef4444; /* Red for down arrow */
+  color: var(--color-negative); /* Red for down arrow */
 }
 
 /* Stats grid */
@@ -266,27 +266,27 @@
 }
 
 .price-widget-change-label {
-  color: #9ca3af;
+  color: var(--color-text-secondary);
 }
 
 .price-widget-change-value {
   font-weight: 500;
-  color: white;
+  color: var(--color-text-primary);
 }
 
 .price-widget-change-value.positive {
-  color: #10b981;
+  color: var(--color-positive);
 }
 
 .price-widget-change-value.negative {
-  color: #ef4444;
+  color: var(--color-negative);
 }
 
 /* Footer */
 .price-widget-footer {
   margin-top: 1.5rem;
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
 }
 
 /* Stat component */
@@ -295,34 +295,34 @@
   display: flex; /* Make it a flex container */
   flex-direction: column; /* Stack children vertically */
   border-radius: 0.5rem;
-  border: 1px solid #374151;
+  border: 1px solid var(--color-widget-border);
   background-color: rgba(12, 12, 12, 1) !important;
   padding: 0.75rem;
-  color: #60a5fa;
+  color: var(--color-info-stat);
   transition: background-color 0.3s ease, color 0.3s ease,
     border-width 0.3s ease;
 }
 
 /* Narrow spread - high liquidity */
 .price-widget-stat.spread-narrow {
-  background-color: rgba(16, 185, 129, 0.2); /* Light green */
-  border-color: rgba(16, 185, 129, 0.5);
+  background-color: var(--color-spread-narrow-bg); /* Light green */
+  border-color: var(--color-spread-narrow-border);
 }
 
 /* Medium spread - normal liquidity */
 .price-widget-stat.spread-medium {
-  background-color: rgba(245, 158, 11, 0.2); /* Yellow */
-  border-color: rgba(245, 158, 11, 0.5);
+  background-color: var(--color-spread-medium-bg); /* Yellow */
+  border-color: var(--color-spread-medium-border);
 }
 
 /* Wide spread - low liquidity */
 .price-widget-stat.spread-wide {
-  background-color: rgba(239, 68, 68, 0.2); /* Red */
-  border-color: rgba(239, 68, 68, 0.5);
+  background-color: var(--color-spread-wide-bg); /* Red */
+  border-color: var(--color-spread-wide-border);
 }
 
 .price-widget-stat-label {
-  color: #6b7280; /* Darker color */
+  color: var(--color-text-label); /* Darker color */
   margin-bottom: 0.25rem;
   font-size: 0.8rem;
   text-align: center; /* Added to center content */
@@ -365,10 +365,10 @@
 
 .spread-stat {
   border-radius: 0.5rem;
-  border: 1px solid #374151;
+  border: 1px solid var(--color-widget-border);
   background-color: rgba(17, 24, 39, 0.4);
   padding: 0.75rem;
-  color: #60a5fa;
+  color: var(--color-info-stat);
   transition: background-color 0.3s ease, color 0.3s ease,
     border-width 0.3s ease;
   display: flex;
@@ -376,7 +376,7 @@
 }
 
 .spread-stat-label {
-  color: #6b7280;
+  color: var(--color-text-label);
   margin-bottom: 0.25rem;
   font-size: 0.8rem;
 }
@@ -392,7 +392,7 @@
 .spread-indicator {
   width: 100%; /* Added width */
   height: 6px;
-  background-color: rgba(55, 65, 81, 0.5);
+  background-color: var(--color-spread-indicator-bg);
   border-radius: 0px;
   position: relative;
   overflow: hidden;
@@ -406,15 +406,15 @@
 
 /* Spread indicator colors based on category - Green is good (tight spread), Orange is worse, Red is bad (wide spread) */
 .spread-indicator-bar.spread-narrow {
-  background-color: rgba(16, 185, 129, 0.8); /* Green - Good (tight spread) */
+  background-color: var(--color-spread-narrow-bar); /* Green - Good (tight spread) */
 }
 
 .spread-indicator-bar.spread-medium {
-  background-color: rgba(245, 158, 11, 0.8); /* Orange/Yellow - Worse */
+  background-color: var(--color-spread-medium-bar); /* Orange/Yellow - Worse */
 }
 
 .spread-indicator-bar.spread-wide {
-  background-color: rgba(239, 68, 68, 0.8); /* Red - Bad (wide spread) */
+  background-color: var(--color-spread-wide-bar); /* Red - Bad (wide spread) */
 }
 
 .spread-stat-value {

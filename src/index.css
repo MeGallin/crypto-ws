@@ -1,6 +1,6 @@
 /* CSS Reset */
-*,
-*::before,
+*, 
+*::before, 
 *::after {
   box-sizing: border-box;
   margin: 0;
@@ -117,4 +117,76 @@ html,
 body,
 #root {
   height: 100%;
+}
+
+:root {
+  /* Primary Colors */
+  --color-background-primary: rgb(var(--color-base-dark-rgb)); /* #0c0c0c */
+  --color-widget-background: rgb(var(--color-base-gray-blue-rgb));
+  --color-widget-border: rgb(var(--color-base-light-gray-blue-rgb));
+  --color-text-primary: rgb(var(--color-base-white-rgb));
+  --color-text-secondary: rgb(var(--color-base-gray-text-rgb));
+  --color-text-label: rgb(var(--color-base-dark-gray-text-rgb));
+
+  /* Accent/Status Colors */
+  --color-base-green-rgb: 16, 185, 129; /* Base RGB for positive/narrow spread */
+  --color-base-red-rgb: 239, 68, 68;   /* Base RGB for negative/wide spread */
+
+  /* Base RGBs for consolidation */
+  --color-base-dark-rgb: 12, 12, 12;
+  --color-base-gray-blue-rgb: 17, 24, 39;
+  --color-base-light-gray-blue-rgb: 31, 41, 55;
+  --color-base-medium-gray-blue-rgb: 55, 65, 81;
+  --color-base-footer-dark-rgb: 26, 26, 26;
+  --color-base-footer-border-rgb: 42, 42, 42;
+
+  --color-base-white-rgb: 255, 255, 255;
+  --color-base-gray-text-rgb: 156, 163, 175;
+  --color-base-dark-gray-text-rgb: 107, 114, 128;
+  --color-base-footer-text-rgb: 160, 160, 160; /* New base for footer text */
+
+  --color-base-orange-rgb: 245, 158, 11;
+  --color-base-yellow-text-rgb: 252, 211, 77;
+  --color-base-blue-rgb: 59, 130, 246;
+  --color-base-light-blue-text-rgb: 147, 197, 253;
+  --color-base-info-blue-rgb: 96, 165, 250;
+  --color-base-link-blue-rgb: 100, 181, 246;
+  --color-base-link-hover-blue-rgb: 144, 202, 249;
+
+  --color-positive: rgb(var(--color-base-green-rgb)); /* Green */
+  --color-negative: rgb(var(--color-base-red-rgb)); /* Red */
+  --color-live-status: #6ee7b7;
+  --color-reconnecting-status: rgb(var(--color-base-yellow-text-rgb));
+  --color-offline-status: #fca5a5;
+  --color-connecting-status: rgb(var(--color-base-light-blue-text-rgb));
+  --color-info-stat: rgb(var(--color-base-info-blue-rgb)); /* Blue for general stats */
+
+  --color-live-status-bg: rgba(var(--color-base-green-rgb), 0.15);
+  --color-live-status-border: rgba(var(--color-base-green-rgb), 0.4);
+  --color-reconnecting-status-bg: rgba(var(--color-base-orange-rgb), 0.15);
+  --color-reconnecting-status-border: rgba(var(--color-base-orange-rgb), 0.4);
+  --color-offline-status-bg: rgba(var(--color-base-red-rgb), 0.15);
+  --color-offline-status-border: rgba(var(--color-base-red-rgb), 0.4);
+  --color-connecting-status-bg: rgba(var(--color-base-blue-rgb), 0.15);
+  --color-connecting-status-border: rgba(var(--color-base-blue-rgb), 0.4);
+
+  /* Footer Colors */
+  --color-footer-background: rgb(var(--color-base-footer-dark-rgb));
+  --color-footer-border: rgb(var(--color-base-footer-border-rgb));
+  --color-footer-text: rgb(var(--color-base-footer-text-rgb));
+  --color-footer-link: rgb(var(--color-base-link-blue-rgb));
+  --color-footer-link-hover: rgb(var(--color-base-link-hover-blue-rgb));
+
+  /* Component Specific Backgrounds/Borders with opacity */
+  --color-spread-indicator-bg: rgba(var(--color-base-medium-gray-blue-rgb), 0.5);
+  --color-spread-stat-bg: rgba(var(--color-base-gray-blue-rgb), 0.4);
+  --color-spread-narrow-bg: rgba(var(--color-base-green-rgb), 0.2);
+  --color-spread-narrow-border: rgba(var(--color-base-green-rgb), 0.5);
+  --color-spread-medium-bg: rgba(var(--color-base-orange-rgb), 0.2);
+  --color-spread-medium-border: rgba(var(--color-base-orange-rgb), 0.5);
+  --color-spread-wide-bg: rgba(var(--color-base-red-rgb), 0.2);
+  --color-spread-wide-border: rgba(var(--color-base-red-rgb), 0.5);
+  --color-spread-narrow-bar: rgba(var(--color-base-green-rgb), 0.8);
+  --color-spread-medium-bar: rgba(var(--color-base-orange-rgb), 0.8);
+  --color-spread-wide-bar: rgba(var(--color-base-red-rgb), 0.8);
 }
