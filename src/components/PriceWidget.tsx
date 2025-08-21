@@ -3,7 +3,10 @@ import './PriceWidget.css';
 import { usePriceData } from '../services/priceService';
 
 // Utility function for formatting numbers
-const formatNumber = (value: number | null, options?: Intl.NumberFormatOptions) => {
+const formatNumber = (
+  value: number | null,
+  options?: Intl.NumberFormatOptions,
+) => {
   if (value === null || value === undefined) return '—';
   return value.toLocaleString(undefined, {
     style: 'decimal',
@@ -21,8 +24,20 @@ interface StatProps {
   className?: string;
 }
 
-function Stat({ label, value, formatOptions, spreadCategory, className }: StatProps) {
-  const classNames = ['price-widget-stat', className, spreadCategory ? `spread-${spreadCategory}` : ''].filter(Boolean).join(' ');
+function Stat({
+  label,
+  value,
+  formatOptions,
+  spreadCategory,
+  className,
+}: StatProps) {
+  const classNames = [
+    'price-widget-stat',
+    className,
+    spreadCategory ? `spread-${spreadCategory}` : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
   return (
     <div className={classNames}>
       <div className="price-widget-stat-label">{label}</div>
@@ -42,7 +57,9 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
   const data = usePriceData(productId);
 
   const [previousPrice, setPreviousPrice] = useState<number | null>(null);
-  const [priceDirection, setPriceDirection] = useState<'up' | 'down' | 'neutral'>('neutral');
+  const [priceDirection, setPriceDirection] = useState<
+    'up' | 'down' | 'neutral'
+  >('neutral');
 
   useEffect(() => {
     if (data.price !== null && previousPrice !== null) {
@@ -68,9 +85,11 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
     const spreadPercentage = ((data.bestAsk - data.bestBid) / midPrice) * 100;
 
     let category: 'narrow' | 'medium' | 'wide' = 'wide';
-    if (spreadPercentage < 0.01) {
+    if (spreadPercentage < 0.1) {
+      // New threshold for narrow
       category = 'narrow';
-    } else if (spreadPercentage < 0.2) {
+    } else if (spreadPercentage < 0.5) {
+      // New threshold for medium
       category = 'medium';
     }
 
@@ -82,7 +101,8 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
   }, [data.bestAsk, data.bestBid]);
 
   const change24h = React.useMemo(() => {
-    if (data.price == null || data.open24h == null || data.open24h === 0) return null;
+    if (data.price == null || data.open24h == null || data.open24h === 0)
+      return null;
     const pct = ((data.price - data.open24h) / data.open24h) * 100;
     return pct;
   }, [data.price, data.open24h]);
@@ -117,10 +137,22 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
         <main className="price-widget-main">
           <div>
             <div className="price-widget-price-label">Last Price</div>
-            <div className={`price-widget-price-value ${priceDirection === 'up' ? 'price-up' : priceDirection === 'down' ? 'price-down' : ''}`}>
+            <div
+              className={`price-widget-price-value ${
+                priceDirection === 'up'
+                  ? 'price-up'
+                  : priceDirection === 'down'
+                  ? 'price-down'
+                  : ''
+              }`}
+            >
               {formatNumber(data.price)}
-              {priceDirection === 'up' && <span className="price-arrow up">▲</span>}
-              {priceDirection === 'down' && <span className="price-arrow down">▼</span>}
+              {priceDirection === 'up' && (
+                <span className="price-arrow up">▲</span>
+              )}
+              {priceDirection === 'down' && (
+                <span className="price-arrow down">▼</span>
+              )}
             </div>
           </div>
 
@@ -129,6 +161,7 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
               label="BEST BID"
               value={data.bestBid}
               spreadCategory={spread?.category || null}
+              className="stat-left-label"
             />
             <Stat
               label="BEST ASK"
@@ -138,7 +171,22 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
             />
             <div className="spread-stat-container">
               <div className="spread-stat">
-                <div className="spread-stat-label">SPREAD</div>
+                <div className="spread-stat-label">
+                  SPREAD INDICATOR
+                  <br />{' '}
+                  <span
+                    className={
+                      spread?.category ? `spread-${spread.category}` : ''
+                    }
+                  >
+                    {spread?.category
+                      ? `${
+                          spread.category.charAt(0).toUpperCase() +
+                          spread.category.slice(1)
+                        }`
+                      : ''}
+                  </span>
+                </div>
                 <div className="spread-stat-content">
                   <div className="spread-indicator">
                     <div
@@ -147,9 +195,9 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
                       }`}
                       style={{
                         width: spread
-                          ? `${Math.min(
-                              100,
-                              Math.max(10, spread.absolute * 1000),
+                          ? `${Math.max(
+                              10, // Minimum width
+                              100 - (spread.percentage / 0.5) * 100, // Inverted percentage
                             )}%`
                           : '10%',
                       }}
@@ -163,13 +211,17 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
                 </div>
               </div>
             </div>
-            <Stat label="24H HIGH" value={data.high24h} />
+            <Stat label="24H HIGH" value={data.high24h} className="stat-left-label" />
             <Stat
               label="24H LOW"
               value={data.low24h}
               className="stat-right-label"
             />
-            <Stat label="24H OPEN" value={data.open24h} />
+            <Stat
+              label="24H OPEN"
+              value={data.open24h}
+              className="stat-left-label"
+            />
             <Stat
               label="24H VOL"
               value={data.volume24h}
@@ -200,4 +252,3 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
     </div>
   );
 }
-
