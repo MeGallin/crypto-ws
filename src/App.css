@@ -1,0 +1,63 @@
+/* App Component Styles */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(12, 12, 12, 1);
+  padding: 0.01rem; /* Increased padding for better mobile spacing */
+  padding-bottom: 0.1rem; /* Extra bottom padding for mobile */
+}
+
+.widgets-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem; /* Further reduced gap between widgets */
+  width: 100%;
+  padding: 0 1rem; /* Add horizontal padding for mobile */
+}
+
+/* Responsive adjustments */
+@media (min-width: 1200px) {
+  .widgets-container {
+    gap: 0.125rem; /* Ultra-minimal gap for very large desktop screens */
+  }
+}
+
+@media (max-width: 1199px) {
+  .widgets-container {
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .widgets-container {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0.75rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .widgets-container {
+    gap: 0.25rem;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-container {
+    padding: 0.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .widgets-container {
+    gap: 0.125rem; /* Ultra-minimal gap for mobile */
+    padding: 0 0.25rem;
+  }
+}

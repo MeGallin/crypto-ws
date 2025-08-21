@@ -1,0 +1,379 @@
+/* PriceWidget Component Styles */
+
+/* Main container that spans full viewport */
+.price-widget-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(12, 12, 12, 1);
+  padding: 0.1rem;
+}
+
+/* Widget card container */
+.price-widget {
+  width: 24rem;
+  max-width: 24rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #1f2937;
+  background-color: #111827;
+  padding: 1.25rem;
+}
+
+/* Responsive adjustments for PriceWidget */
+@media (min-width: 1200px) {
+  .price-widget {
+    width: 22rem;
+    max-width: 22rem;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 1199px) {
+  .price-widget {
+    width: 24rem;
+    max-width: 24rem;
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .price-widget {
+    width: 24rem;
+    max-width: 24rem;
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .price-widget {
+    width: 20rem;
+    max-width: 20rem;
+    padding: 1rem;
+  }
+
+  .price-widget-title {
+    font-size: 1.125rem;
+  }
+
+  .price-widget-price-value {
+    font-size: 1.75rem;
+  }
+
+  .price-widget-stats-grid {
+    gap: 0.75rem;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .price-widget {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem;
+  }
+
+  .price-widget-title {
+    font-size: 1rem;
+  }
+
+  .price-widget-price-value {
+    font-size: 1.5rem;
+  }
+
+  .price-widget-stats-grid {
+    gap: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .price-widget-stat {
+    padding: 0.5rem;
+  }
+
+  .price-widget-stat-label {
+    margin-bottom: 0.125rem;
+    font-size: 0.75rem;
+  }
+
+  .price-widget-stat-value {
+    font-size: 0.875rem;
+  }
+
+  .price-widget-change {
+    padding-top: 0.375rem;
+  }
+
+  .price-widget-change-label {
+    font-size: 0.75rem;
+  }
+
+  .price-widget-change-value {
+    font-size: 0.875rem;
+  }
+
+  .price-widget-footer {
+    font-size: 0.6875rem;
+    margin-top: 1rem;
+  }
+}
+
+/* Header section */
+.price-widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+/* Title */
+.price-widget-title {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Status badge */
+.price-widget-status {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.price-widget-status.live {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.price-widget-status.reconnecting {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.price-widget-status.offline {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.price-widget-status.connecting {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+/* Main content area */
+.price-widget-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Price label */
+.price-widget-price-label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+/* Price value */
+.price-widget-price-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stats grid */
+.price-widget-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+/* Spread stat - full width across both columns with inline text and reduced height */
+.price-widget-stats-grid .spread-stat {
+  grid-column: span 2;
+  max-width: none;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  min-height: auto;
+  height: auto;
+}
+
+.price-widget-stats-grid .spread-stat .price-widget-stat-label {
+  margin-bottom: 0;
+  font-size: 0.875rem;
+}
+
+.price-widget-stats-grid .spread-stat .price-widget-stat-value {
+  margin-left: 1rem;
+  font-size: 0.875rem;
+}
+
+/* Change section */
+.price-widget-change {
+  padding-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.price-widget-change-label {
+  color: #9ca3af;
+}
+
+.price-widget-change-value {
+  font-weight: 500;
+  color: white;
+}
+
+.price-widget-change-value.positive {
+  color: #10b981;
+}
+
+.price-widget-change-value.negative {
+  color: #ef4444;
+}
+
+/* Footer */
+.price-widget-footer {
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* Stat component */
+.price-widget-stat {
+  border-radius: 0.5rem;
+  border: 1px solid #374151;
+  background-color: rgba(12, 12, 12, 1) !important;
+  padding: 0.75rem;
+  color: #60a5fa;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-width 0.3s ease;
+}
+
+/* Narrow spread - high liquidity */
+.price-widget-stat.spread-narrow {
+  background-color: rgba(16, 185, 129, 0.2); /* Light green */
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+/* Medium spread - normal liquidity */
+.price-widget-stat.spread-medium {
+  background-color: rgba(245, 158, 11, 0.2); /* Yellow */
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+/* Wide spread - low liquidity */
+.price-widget-stat.spread-wide {
+  background-color: rgba(239, 68, 68, 0.2); /* Red */
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.price-widget-stat-label {
+  color: #6b7280; /* Darker color */
+  margin-bottom: 0.25rem;
+  font-size: 0.8rem; /* Reduced size by 0.8rem */
+}
+
+.price-widget-stat-value {
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  font-size: 1.4rem; /* Increased size by 1.4rem */
+}
+
+/* Reduce size for volume stat value */
+.stat-right-label .price-widget-stat-value {
+  font-size: 1.2rem; /* Reduced size for volume */
+}
+
+/* Special styling for BEST ASK to move label to the right while keeping price centered */
+.stat-best-ask .price-widget-stat-label {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* Special styling for 24H LOW and 24H VOL to move labels to the right while keeping prices centered */
+.stat-right-label .price-widget-stat-label {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* Spread stat container - full width across both columns */
+.spread-stat-container {
+  grid-column: span 2;
+  max-width: none;
+  margin: 0;
+}
+
+.spread-stat {
+  border-radius: 0.5rem;
+  border: 1px solid #374151;
+  background-color: rgba(17, 24, 39, 0.4);
+  padding: 0.75rem;
+  color: #60a5fa;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.spread-stat-label {
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.spread-stat-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.spread-indicator {
+  flex: 1;
+  height: 6px;
+  background-color: rgba(55, 65, 81, 0.5);
+  border-radius: 3px;
+  margin: 0 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.spread-indicator-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Spread indicator colors based on category - Green is good (tight spread), Orange is worse, Red is bad (wide spread) */
+.spread-indicator-bar.spread-narrow {
+  background-color: rgba(16, 185, 129, 0.8); /* Green - Good (tight spread) */
+}
+
+.spread-indicator-bar.spread-medium {
+  background-color: rgba(245, 158, 11, 0.8); /* Orange/Yellow - Worse */
+}
+
+.spread-indicator-bar.spread-wide {
+  background-color: rgba(239, 68, 68, 0.8); /* Red - Bad (wide spread) */
+}
+
+.spread-stat-value {
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.875rem;
+  min-width: 60px;
+  text-align: right;
+}
