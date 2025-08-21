@@ -1,3 +1,6 @@
+import { config } from '../config';
+import React from 'react';
+
 export interface PriceData {
   price: number | null;
   bestBid: number | null;
@@ -6,14 +9,15 @@ export interface PriceData {
   high24h: number | null;
   low24h: number | null;
   volume24h: number | null;
-  status: 'connecting' | 'live' | 'reconnecting' | 'offline';
+  status: 'connecting' | 'live' | 'reconnecting' | 'offline' | 'error';
   lastUpdate: number;
+  errorMessage?: string;
 }
 
 export interface PriceService {
   subscribe: (productId: string, callback: (data: PriceData) => void) => void;
   unsubscribe: (productId: string) => void;
-  getConnectionStatus: () => 'connecting' | 'live' | 'reconnecting' | 'offline';
+  getConnectionStatus: () => 'connecting' | 'live' | 'reconnecting' | 'offline' | 'error';
 }
 
 class PriceServiceImpl implements PriceService {
@@ -22,31 +26,42 @@ class PriceServiceImpl implements PriceService {
   private timer: number | null = null;
   private subscribers = new Map<string, Set<(data: PriceData) => void>>();
   private priceData = new Map<string, PriceData>();
-  private endpoint = 'wss://ws-feed.exchange.coinbase.com';
+  private endpoint: string;
 
   constructor() {
+    this.endpoint = config.webSocketUrl;
     this.connect();
   }
 
   private connect() {
     this.updateStatus('connecting');
+    console.log('Connecting to WebSocket...');
 
     const ws = new WebSocket(this.endpoint);
     this.ws = ws;
 
     ws.onopen = () => {
       try {
+        console.log('WebSocket connection opened.');
         this.sendSubscriptions();
         this.updateStatus('live');
         this.retries = 0;
       } catch (error) {
         console.error('Error sending subscription message:', error);
+        this.updateStatus('error', 'Failed to subscribe');
       }
     };
 
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data);
+
+        if (msg.type === 'error') {
+          console.error('Coinbase API Error:', msg.message);
+          this.updateStatus('error', msg.message);
+          return;
+        }
+
         if (msg.type === 'ticker' && this.subscribers.has(msg.product_id)) {
           const data: PriceData = {
             price: msg.price ? Number(msg.price) : null,
@@ -68,12 +83,20 @@ class PriceServiceImpl implements PriceService {
       }
     };
 
-    ws.onclose = () => this.scheduleReconnect();
-    ws.onerror = () => {
+    ws.onclose = (event) => {
+      console.log('WebSocket connection closed:', event.code, event.reason);
+      if (event.code !== 1000) { // 1000 is normal closure
+        this.scheduleReconnect();
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      this.updateStatus('error', 'WebSocket connection error');
       try {
         ws.close();
-      } catch (error) {
-        console.error('Error closing WebSocket:', error);
+      } catch (closeError) {
+        console.error('Error closing WebSocket:', closeError);
       }
     };
   }
@@ -81,6 +104,7 @@ class PriceServiceImpl implements PriceService {
   private sendSubscriptions() {
     const productIds = Array.from(this.subscribers.keys());
     if (productIds.length > 0) {
+      console.log('Subscribing to products:', productIds);
       const subscribeMsg = JSON.stringify({
         type: 'subscribe',
         product_ids: productIds,
@@ -91,24 +115,30 @@ class PriceServiceImpl implements PriceService {
   }
 
   private scheduleReconnect() {
+    if (this.retries >= 5) {
+        this.updateStatus('offline', 'Failed to reconnect after multiple attempts');
+        return;
+    }
     this.updateStatus('reconnecting');
-    const base = 500;
-    const max = 10_000;
-    const attempt = Math.min(this.retries + 1, 8);
+    const base = 1000;
+    const max = 30000;
+    const attempt = this.retries + 1;
     this.retries = attempt;
     const delay =
-      Math.min(max, base * 2 ** attempt) + Math.floor(Math.random() * 250);
+      Math.min(max, base * 2 ** attempt) + Math.floor(Math.random() * 1000);
 
+    console.log(`Reconnecting in ${delay}ms (attempt ${attempt})...`);
     if (this.timer) window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => this.connect(), delay);
   }
 
   private updateStatus(
-    status: 'connecting' | 'live' | 'reconnecting' | 'offline',
+    status: 'connecting' | 'live' | 'reconnecting' | 'offline' | 'error',
+    errorMessage?: string
   ) {
-    // Update status for all subscribed products
     this.priceData.forEach((data, productId) => {
       data.status = status;
+      data.errorMessage = errorMessage;
       this.notifySubscribers(productId, data);
     });
   }
@@ -126,13 +156,11 @@ class PriceServiceImpl implements PriceService {
     }
     this.subscribers.get(productId)!.add(callback);
 
-    // If we already have data for this product, send it immediately
     const existingData = this.priceData.get(productId);
     if (existingData) {
       callback(existingData);
     }
 
-    // If WebSocket is already open, send subscription for this new product
     if (this.ws?.readyState === WebSocket.OPEN) {
       const subscribeMsg = JSON.stringify({
         type: 'subscribe',
@@ -153,7 +181,7 @@ class PriceServiceImpl implements PriceService {
     }
   }
 
-  getConnectionStatus(): 'connecting' | 'live' | 'reconnecting' | 'offline' {
+  getConnectionStatus(): 'connecting' | 'live' | 'reconnecting' | 'offline' | 'error' {
     if (this.ws?.readyState === WebSocket.OPEN) return 'live';
     if (this.ws?.readyState === WebSocket.CONNECTING) return 'connecting';
     if (this.ws?.readyState === WebSocket.CLOSING) return 'reconnecting';
@@ -161,12 +189,10 @@ class PriceServiceImpl implements PriceService {
   }
 }
 
-// Create a singleton instance
 export const priceService = new PriceServiceImpl();
 
-import React from 'react';
 
-// React hook for using the price service
+
 export function usePriceData(productId: string) {
   const [data, setData] = React.useState<PriceData>({
     price: null,

@@ -2,32 +2,32 @@ import React from 'react';
 import './PriceWidget.css';
 import { usePriceData } from '../services/priceService';
 
+// Utility function for formatting numbers
+const formatNumber = (value: number | null, options?: Intl.NumberFormatOptions) => {
+  if (value === null || value === undefined) return '—';
+  return value.toLocaleString(undefined, {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    ...options,
+  });
+};
+
 interface StatProps {
   label: string;
   value: number | null;
-  format?: (v: number) => string;
+  formatOptions?: Intl.NumberFormatOptions;
   spreadCategory?: 'narrow' | 'medium' | 'wide' | null;
   className?: string;
 }
 
-function Stat({ label, value, format, spreadCategory, className }: StatProps) {
+function Stat({ label, value, formatOptions, spreadCategory, className }: StatProps) {
+  const classNames = ['price-widget-stat', className, spreadCategory ? `spread-${spreadCategory}` : ''].filter(Boolean).join(' ');
   return (
-    <div
-      className={`price-widget-stat ${
-        spreadCategory ? `spread-${spreadCategory}` : ''
-      } ${className || ''}`}
-    >
+    <div className={classNames}>
       <div className="price-widget-stat-label">{label}</div>
       <div className="price-widget-stat-value">
-        {value != null
-          ? format
-            ? format(value)
-            : value.toLocaleString(undefined, {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          : '—'}
+        {formatNumber(value, formatOptions)}
       </div>
     </div>
   );
@@ -46,6 +46,7 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
     if (!data.bestAsk || !data.bestBid) return null;
 
     const midPrice = (data.bestAsk + data.bestBid) / 2;
+    if (midPrice === 0) return null; // Avoid division by zero
     const spreadPercentage = ((data.bestAsk - data.bestBid) / midPrice) * 100;
 
     let category: 'narrow' | 'medium' | 'wide' = 'wide';
@@ -63,10 +64,27 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
   }, [data.bestAsk, data.bestBid]);
 
   const change24h = React.useMemo(() => {
-    if (data.price == null || data.open24h == null) return null;
+    if (data.price == null || data.open24h == null || data.open24h === 0) return null;
     const pct = ((data.price - data.open24h) / data.open24h) * 100;
     return pct;
   }, [data.price, data.open24h]);
+
+  // Render a loading state if the price is not yet available
+  if (data.price === null) {
+    return (
+      <div className="price-widget-container">
+        <div className="price-widget loading">
+          <div className="price-widget-header">
+            <h1 className="price-widget-title">{title}</h1>
+            <span className={`price-widget-status ${data.status}`}>
+              {data.status}
+            </span>
+          </div>
+          <div className="loading-message">Loading price data...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="price-widget-container">
@@ -82,13 +100,7 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
           <div>
             <div className="price-widget-price-label">Last Price</div>
             <div className="price-widget-price-value">
-              {data.price != null
-                ? data.price.toLocaleString(undefined, {
-                    style: 'decimal',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                : '—'}
+              {formatNumber(data.price)}
             </div>
           </div>
 
@@ -141,13 +153,10 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
             <Stat
               label="24H VOL"
               value={data.volume24h}
-              format={(v) =>
-                v.toLocaleString(undefined, {
-                  style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
-              }
+              formatOptions={{
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }}
               className="stat-right-label"
             />
           </div>
@@ -171,3 +180,4 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
     </div>
   );
 }
+
