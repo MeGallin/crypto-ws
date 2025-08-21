@@ -4,10 +4,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   background-color: rgba(12, 12, 12, 1);
   padding: 0.01rem; /* Increased padding for better mobile spacing */
-  padding-bottom: 0.1rem; /* Extra bottom padding for mobile */
+  padding-bottom: 5rem; /* Extra bottom padding for mobile */
 }
 
 .widgets-container {

@@ -1,4 +1,5 @@
 import { PriceWidget } from './components/PriceWidget';
+import Footer from './components/Footer';
 import './App.css';
 
 export default function App() {
@@ -10,6 +11,7 @@ export default function App() {
         <PriceWidget title="SOL-USD" productId="SOL-USD" />
         <PriceWidget title="ADA-USD" productId="ADA-USD" />
       </div>
+      <Footer />
     </div>
   );
 }
