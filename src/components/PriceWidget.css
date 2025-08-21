@@ -196,6 +196,36 @@
   font-weight: 700;
   color: white;
   font-variant-numeric: tabular-nums;
+  display: flex; /* To align price and arrow */
+  align-items: center;
+  justify-content: flex-start; /* Align price and arrow to the start */
+  position: relative; /* For absolute positioning of the arrow */
+  padding-right: 2rem; /* Make space for the arrow */
+}
+
+.price-widget-price-value.price-up {
+  color: #10b981; /* Green for price increase */
+}
+
+.price-widget-price-value.price-down {
+  color: #ef4444; /* Red for price decrease */
+}
+
+.price-arrow {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  margin-left: 0;
+}
+
+.price-arrow.up {
+  color: #10b981; /* Green for up arrow */
+}
+
+.price-arrow.down {
+  color: #ef4444; /* Red for down arrow */
 }
 
 /* Stats grid */

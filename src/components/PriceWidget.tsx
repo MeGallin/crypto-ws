@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './PriceWidget.css';
 import { usePriceData } from '../services/priceService';
 
@@ -40,6 +40,24 @@ interface PriceWidgetProps {
 
 export function PriceWidget({ title, productId }: PriceWidgetProps) {
   const data = usePriceData(productId);
+
+  const [previousPrice, setPreviousPrice] = useState<number | null>(null);
+  const [priceDirection, setPriceDirection] = useState<'up' | 'down' | 'neutral'>('neutral');
+
+  useEffect(() => {
+    if (data.price !== null && previousPrice !== null) {
+      if (data.price > previousPrice) {
+        setPriceDirection('up');
+      } else if (data.price < previousPrice) {
+        setPriceDirection('down');
+      }
+      // If data.price === previousPrice, we do nothing to priceDirection,
+      // so it retains its last 'up' or 'down' state.
+    }
+    if (data.price !== null) {
+      setPreviousPrice(data.price);
+    }
+  }, [data.price, previousPrice]);
 
   // Calculate bid-ask spread
   const spread = React.useMemo(() => {
@@ -99,8 +117,10 @@ export function PriceWidget({ title, productId }: PriceWidgetProps) {
         <main className="price-widget-main">
           <div>
             <div className="price-widget-price-label">Last Price</div>
-            <div className="price-widget-price-value">
+            <div className={`price-widget-price-value ${priceDirection === 'up' ? 'price-up' : priceDirection === 'down' ? 'price-down' : ''}`}>
               {formatNumber(data.price)}
+              {priceDirection === 'up' && <span className="price-arrow up">▲</span>}
+              {priceDirection === 'down' && <span className="price-arrow down">▼</span>}
             </div>
           </div>
 
